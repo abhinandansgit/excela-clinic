@@ -1,0 +1,46 @@
+<svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="favRedGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EE2427" />
+      <stop offset="100%" stop-color="#C41518" />
+    </linearGradient>
+  </defs>
+
+  {/* Background Disk for high visibility */}
+  <circle cx="70" cy="70" r="66" fill="#0E1A12" stroke="#C9A84C" stroke-width="3"/>
+
+  {/* Sunburst Rays (Red) */}
+  <g fill="url(#favRedGrad)" transform="translate(0, 5)">
+    <polygon points="70,12 66,42 74,42" />
+    <polygon points="53,16 58,45 65,42" />
+    <polygon points="38,25 49,50 55,45" />
+    <polygon points="26,38 42,55 47,48" />
+    <polygon points="18,54 37,60 40,53" />
+    <polygon points="15,72 36,66 37,59" />
+    
+    <polygon points="87,16 75,42 82,45" />
+    <polygon points="102,25 85,45 91,50" />
+    <polygon points="114,38 93,48 98,55" />
+    <polygon points="122,54 100,53 103,60" />
+    <polygon points="125,72 103,59 104,66" />
+
+    {/* Red Arch */}
+    <path
+      d="M 32,76 A 38,38 0 0,1 108,76 L 97,76 A 27,27 0 0,0 43,76 Z"
+      fill="url(#favRedGrad)"
+    />
+
+    {/* Central Letter 'E' */}
+    <text
+      x="70"
+      y="71"
+      font-family="'Cinzel', 'Times New Roman', 'Georgia', serif"
+      font-size="24"
+      font-weight="800"
+      fill="#F3E7C4"
+      text-anchor="middle"
+    >
+      E
+    </text>
+  </g>
+</svg>

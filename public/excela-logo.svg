@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 240" width="100%" height="100%">
+  <defs>
+    <!-- Enhanced Red Sunburst Gradient -->
+    <linearGradient id="excelaRedGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ED262A" />
+      <stop offset="100%" stop-color="#C0161A" />
+    </linearGradient>
+
+    <!-- Enhanced Purple Banner Gradient -->
+    <linearGradient id="excelaPurpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#55217F" />
+      <stop offset="100%" stop-color="#3B125C" />
+    </linearGradient>
+
+    <!-- Subtle Drop Shadow for Crest -->
+    <filter id="crestShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <g filter="url(#crestShadow)">
+    <!-- SUNBURST RAYS (11 sharp red rays radiating from top arc) -->
+    <!-- Center ray pointing up -->
+    <polygon points="150,15 145,55 155,55" fill="url(#excelaRedGrad)" />
+    <!-- Rays left of center -->
+    <polygon points="127,21 133,59 142,56" fill="url(#excelaRedGrad)" />
+    <polygon points="106,34 122,67 129,60" fill="url(#excelaRedGrad)" />
+    <polygon points="90,54 113,76 119,67" fill="url(#excelaRedGrad)" />
+    <polygon points="80,78 107,87 110,77" fill="url(#excelaRedGrad)" />
+    <polygon points="76,104 105,97 106,87" fill="url(#excelaRedGrad)" />
+    
+    <!-- Rays right of center -->
+    <polygon points="173,21 158,56 167,59" fill="url(#excelaRedGrad)" />
+    <polygon points="194,34 171,60 178,67" fill="url(#excelaRedGrad)" />
+    <polygon points="210,54 181,67 187,76" fill="url(#excelaRedGrad)" />
+    <polygon points="220,78 190,77 193,87" fill="url(#excelaRedGrad)" />
+    <polygon points="224,104 194,87 195,97" fill="url(#excelaRedGrad)" />
+
+    <!-- RED SEMI-CIRCULAR ARCH -->
+    <path d="M 98,110 A 52,52 0 0,1 202,110 L 186,110 A 36,36 0 0,0 114,110 Z" fill="url(#excelaRedGrad)" />
+
+    <!-- CENTRAL LETTER 'E' IN CREST -->
+    <text x="150" y="103" font-family="'Cinzel', 'Times New Roman', 'Georgia', serif" font-size="34" font-weight="800" fill="#491C6E" text-anchor="middle">E</text>
+
+    <!-- PURPLE BANNER BOX -->
+    <rect x="25" y="122" width="250" height="46" rx="4" fill="url(#excelaPurpleGrad)" />
+
+    <!-- BANNER TEXT: EXCELA CLINIC -->
+    <text x="150" y="154" font-family="'Cinzel', 'Times New Roman', 'Georgia', serif" font-size="24" font-weight="700" letter-spacing="3" fill="#FFFFFF" text-anchor="middle">EXCELA CLINIC</text>
+
+    <!-- SUBTITLE TEXT: GASTRO & LIVER CARE -->
+    <text x="150" y="194" font-family="'Inter', 'Montserrat', 'Arial', sans-serif" font-size="14" font-weight="800" letter-spacing="3.5" fill="url(#excelaRedGrad)" text-anchor="middle">GASTRO &amp; LIVER CARE</text>
+  </g>
+</svg>
