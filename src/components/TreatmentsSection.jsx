@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import {
   ChevronRight,
   ChevronDown,
   Stethoscope
 } from "lucide-react";
+import { CARD_STAGGER_VARIANT, TRANSITION_EASE } from "../constants/motion";
 
 export default function TreatmentsSection({ onBookDoctor, onBookTest }) {
   const [activeTab, setActiveTab] = useState("all");
@@ -153,11 +155,17 @@ export default function TreatmentsSection({ onBookDoctor, onBookTest }) {
   const visibleTreatments = showAll ? filtered : filtered.slice(0, 6);
 
   return (
-    <section id="treatments" className="py-20 sm:py-28 md:py-32 bg-[#F8FAF8] border-b border-[#E2EDE5]">
+    <section id="treatments" className="py-24 sm:py-32 md:py-36 bg-[#FAF9F6] border-b border-[#E2EDE5]">
       <div className="max-w-7xl mx-auto px-5 sm:px-6">
         {/* Section Header */}
-        <div className="max-w-2xl mb-10 sm:mb-12 text-left animate-fade-in-up">
-          <div className="flex items-center gap-2 text-xs font-semibold text-[#8C6D27] uppercase tracking-widest mb-3">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: TRANSITION_EASE }}
+          className="max-w-2xl mb-10 sm:mb-12 text-left"
+        >
+          <div className="flex items-center gap-2 text-xs font-semibold text-[#82631D] uppercase tracking-widest mb-3">
             <Stethoscope className="w-4 h-4 text-[#C9A84C]" />
             <span>Outpatient Specializations</span>
           </div>
@@ -167,34 +175,46 @@ export default function TreatmentsSection({ onBookDoctor, onBookTest }) {
           <p className="text-sm sm:text-base text-[#4F6858] mt-3 font-normal leading-relaxed">
             Targeted consultations, surgical advice, and diagnostic protocols tailored for individual patient recovery.
           </p>
-        </div>
+        </motion.div>
 
         {/* Category Filter Tabs */}
-        <div className="flex flex-wrap gap-2 sm:gap-2.5 mb-10 sm:mb-12 animate-fade-in-up">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: TRANSITION_EASE }}
+          className="flex flex-wrap gap-2 sm:gap-2.5 mb-10 sm:mb-12"
+        >
           {treatmentCategories.map(tab => (
             <button
               key={tab.id}
               onClick={() => handleTabChange(tab.id)}
-              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer ${
+              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                 activeTab === tab.id
-                  ? "bg-[#14251B] text-[#F4E8C9] border border-[#C9A84C]/50 shadow-xs"
+                  ? "bg-[#0E1A12] text-[#F4E8C9] border border-[#C9A84C]/50 shadow-sm"
                   : "bg-white text-[#304838] border border-[#D5E3D8] hover:bg-[#F0F5F1]"
               }`}
             >
               {tab.label}
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Grid of Treatment Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {visibleTreatments.map(item => (
-            <div
+          {visibleTreatments.map((item, index) => (
+            <motion.div
               key={item.id}
-              className="clinic-card clinic-card-hover rounded-xl p-6 flex flex-col justify-between animate-fade-in-up"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.5, delay: (index % 3) * 0.1, ease: TRANSITION_EASE }}
+              variants={CARD_STAGGER_VARIANT}
+              whileHover={{ y: -4 }}
+              className="clinic-card rounded-xl p-6 flex flex-col justify-between hover:shadow-xl hover:border-[#C9A84C]/50 transition-all duration-300 group"
             >
               <div>
-                <div className="text-[11px] font-semibold text-[#8C6D27] uppercase tracking-wider mb-2">
+                <div className="text-[11px] font-bold text-[#82631D] uppercase tracking-wider mb-2">
                   {item.doctor}
                 </div>
 
@@ -220,22 +240,22 @@ export default function TreatmentsSection({ onBookDoctor, onBookTest }) {
                       onBookDoctor(item.doctorId);
                     }
                   }}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-[#14251B] hover:text-[#C9A84C] transition-colors cursor-pointer group"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-[#0E1A12] hover:text-[#C9A84C] transition-colors cursor-pointer group/btn"
                 >
                   <span>Book Slot</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-[#C9A84C] group-hover:translate-x-0.5 transition-transform" />
+                  <ChevronRight className="w-3.5 h-3.5 text-[#C9A84C] group-hover/btn:translate-x-1 transition-transform duration-300" />
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* Seamless See All / See Less Toggle */}
         {filtered.length > 6 && (
-          <div className="mt-12 text-center animate-fade-in-up">
+          <div className="mt-12 text-center">
             <button
               onClick={() => setShowAll(!showAll)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white hover:bg-[#F2F7F3] text-[#14251B] border border-[#D5E3D8] hover:border-[#C9A84C]/60 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shadow-xs group"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white hover:bg-[#F2F7F3] text-[#0E1A12] border border-[#D5E3D8] hover:border-[#C9A84C]/60 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shadow-xs group"
             >
               <span>{showAll ? "See Less" : `See All Treatments (${filtered.length})`}</span>
               <ChevronDown className={`w-4 h-4 text-[#C9A84C] transition-transform duration-300 ${showAll ? "rotate-180" : ""}`} />

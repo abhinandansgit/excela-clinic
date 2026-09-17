@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import {
   Clock,
   Calendar,
@@ -6,6 +7,7 @@ import {
   GraduationCap,
   Award
 } from "lucide-react";
+import { CARD_STAGGER_VARIANT, TRANSITION_EASE } from "../constants/motion";
 
 export default function DoctorsSection({ doctors = [], onBookDoctor }) {
   const [expandedDoctors, setExpandedDoctors] = useState({});
@@ -15,11 +17,17 @@ export default function DoctorsSection({ doctors = [], onBookDoctor }) {
   };
 
   return (
-    <section id="doctors" className="py-20 sm:py-28 md:py-32 bg-[#FFFFFF] border-b border-[#E2EDE5]">
+    <section id="doctors" className="py-24 sm:py-32 md:py-36 bg-[#FFFFFF] border-b border-[#E2EDE5]">
       <div className="max-w-7xl mx-auto px-5 sm:px-6">
         {/* Section Header */}
-        <div className="max-w-2xl mb-12 sm:mb-16 text-left animate-fade-in-up">
-          <div className="flex items-center gap-2 text-xs font-semibold text-[#8C6D27] uppercase tracking-widest mb-3">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: TRANSITION_EASE }}
+          className="max-w-2xl mb-12 sm:mb-16 text-left"
+        >
+          <div className="flex items-center gap-2 text-xs font-semibold text-[#82631D] uppercase tracking-widest mb-3">
             <Award className="w-4 h-4 text-[#C9A84C]" />
             <span>Senior Medical Faculty</span>
           </div>
@@ -29,28 +37,36 @@ export default function DoctorsSection({ doctors = [], onBookDoctor }) {
           <p className="text-sm sm:text-base text-[#4C6856] mt-3 font-normal leading-relaxed">
             Direct OPD consultations with distinguished medical experts at Excela Clinic, Bhubaneswar.
           </p>
-        </div>
+        </motion.div>
 
         {/* Two Doctors Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10">
-          {doctors.map((doctor) => {
+          {doctors.map((doctor, index) => {
             const isExpanded = expandedDoctors[doctor.id];
             const visibleFocus = isExpanded ? doctor.treatments : doctor.treatments.slice(0, 5);
             const hiddenCount = doctor.treatments.length - 5;
 
             return (
-              <div
+              <motion.div
                 key={doctor.id}
-                className="clinic-card clinic-card-hover rounded-2xl p-6 sm:p-9 flex flex-col justify-between animate-fade-in-up"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6, delay: index * 0.1, ease: TRANSITION_EASE }}
+                variants={CARD_STAGGER_VARIANT}
+                className="clinic-card rounded-2xl p-6 sm:p-9 flex flex-col justify-between hover:shadow-2xl hover:border-[#C9A84C]/60 transition-all duration-400 group"
               >
                 <div>
                   <div className="flex flex-col sm:flex-row items-start gap-6">
                     {/* Portrait Image */}
-                    <div className="w-28 h-36 sm:w-32 sm:h-40 rounded-xl overflow-hidden border border-[#C9A84C]/40 shrink-0 bg-[#F4F8F5] shadow-xs group">
-                      <img
+                    <div className="w-28 h-36 sm:w-32 sm:h-40 rounded-xl overflow-hidden border border-[#C9A84C]/40 shrink-0 bg-[#F4F8F5] shadow-xs relative">
+                      <motion.img
                         src={doctor.image}
                         alt={doctor.name}
-                        className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.4, ease: TRANSITION_EASE }}
+                        className="w-full h-full object-cover object-top"
+                        loading="lazy"
                       />
                     </div>
 
@@ -65,7 +81,7 @@ export default function DoctorsSection({ doctors = [], onBookDoctor }) {
                         {doctor.name}
                       </h3>
 
-                      <p className="text-xs font-semibold uppercase tracking-wider text-[#C9A84C] mt-1 mb-3">
+                      <p className="text-xs font-bold uppercase tracking-wider text-[#82631D] mt-1 mb-3">
                         {doctor.role}
                       </p>
 
@@ -90,7 +106,7 @@ export default function DoctorsSection({ doctors = [], onBookDoctor }) {
                         <button
                           type="button"
                           onClick={() => toggleDoctorExpand(doctor.id)}
-                          className="text-xs font-bold text-[#8C6D27] hover:text-[#14251B] transition-colors cursor-pointer"
+                          className="text-xs font-bold text-[#82631D] hover:text-[#14251B] transition-colors cursor-pointer"
                         >
                           {isExpanded ? "See Less" : `See All (${doctor.treatments.length})`}
                         </button>
@@ -111,7 +127,7 @@ export default function DoctorsSection({ doctors = [], onBookDoctor }) {
                         <button
                           type="button"
                           onClick={() => toggleDoctorExpand(doctor.id)}
-                          className="px-3 py-1 rounded-md text-xs font-semibold bg-[#FAF8F2] text-[#7A5C1B] border border-[#E7CF86]/50 hover:bg-[#F3EDDA] transition-colors cursor-pointer"
+                          className="px-3 py-1 rounded-md text-xs font-semibold bg-[#FAF8F2] text-[#82631D] border border-[#E7CF86]/50 hover:bg-[#F3EDDA] transition-colors cursor-pointer"
                         >
                           +{hiddenCount} more
                         </button>
@@ -133,14 +149,14 @@ export default function DoctorsSection({ doctors = [], onBookDoctor }) {
 
                   <button
                     onClick={() => onBookDoctor(doctor.id)}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#14251B] hover:bg-[#1F382A] text-[#F4E8C9] hover:text-white border border-[#C9A84C]/50 text-xs font-bold uppercase tracking-wider shadow-xs transition-all cursor-pointer group"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0E1A12] hover:bg-[#182C1E] text-[#F4E8C9] hover:text-white border border-[#C9A84C]/50 text-xs font-bold uppercase tracking-wider shadow-xs transition-all cursor-pointer group"
                   >
                     <Calendar className="w-3.5 h-3.5 text-[#C9A84C]" />
                     <span>Book Consultation</span>
                     <ChevronRight className="w-3.5 h-3.5 text-[#C9A84C] group-hover:translate-x-0.5 transition-transform" />
                   </button>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Logo from "./Logo";
 import {
   Phone,
@@ -10,6 +11,7 @@ import {
   X,
   Sparkles
 } from "lucide-react";
+import { TRANSITION_EASE } from "../constants/motion";
 
 export default function Navbar({
   onOpenBooking,
@@ -18,22 +20,45 @@ export default function Navbar({
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeHash, setActiveHash] = useState("");
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 15);
+      setScrolled(window.scrollY > 80);
     };
 
-    const handleHashChange = () => {
-      setActiveHash(window.location.hash);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("hashchange", handleHashChange);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
+
+  // Section observer compatible with Lenis scroll
+  useEffect(() => {
+    const sectionIds = ["doctors", "treatments", "diagnostics", "ambiance", "location"];
+    
+    const handleIntersect = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, {
+      root: null,
+      rootMargin: "-25% 0px -45% 0px",
+      threshold: 0.1
+    });
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      observer.disconnect();
     };
   }, []);
 
@@ -50,11 +75,11 @@ export default function Navbar({
   }, [mobileMenuOpen]);
 
   const navLinks = [
-    { name: "Doctors", href: "#doctors" },
-    { name: "Treatments", href: "#treatments" },
-    { name: "Diagnostics", href: "#diagnostics" },
-    { name: "The Clinic", href: "#ambiance" },
-    { name: "Location", href: "#location" }
+    { name: "Doctors", href: "#doctors", id: "doctors" },
+    { name: "Treatments", href: "#treatments", id: "treatments" },
+    { name: "Diagnostics", href: "#diagnostics", id: "diagnostics" },
+    { name: "The Clinic", href: "#ambiance", id: "ambiance" },
+    { name: "Location", href: "#location", id: "location" }
   ];
 
   return (
@@ -96,8 +121,8 @@ export default function Navbar({
           <nav
             className={`max-w-7xl mx-auto rounded-2xl md:rounded-full transition-all duration-500 border ${
               scrolled
-                ? "bg-[#14251B]/95 backdrop-blur-xl border-[#C9A84C]/40 shadow-2xl shadow-black/30 py-2.5 px-4 sm:px-6 text-white"
-                : "bg-white/90 backdrop-blur-lg border-[#DDE7DF] hover:border-[#C9A84C]/50 shadow-xl shadow-[#122217]/5 py-3 px-4 sm:px-6 text-[#1A2C20]"
+                ? "bg-[#0E1A12]/95 backdrop-blur-xl border-[#C9A84C]/40 shadow-2xl shadow-black/40 py-2 px-4 sm:px-6 text-white"
+                : "bg-white/90 backdrop-blur-md border-[#DDE7DF] hover:border-[#C9A84C]/50 shadow-xl shadow-[#122217]/5 py-3 px-4 sm:px-6 text-[#1A2C20]"
             }`}
           >
             <div className="flex justify-between items-center">
@@ -107,27 +132,37 @@ export default function Navbar({
               </a>
 
               {/* Desktop Nav Items */}
-              <div className="hidden lg:flex items-center gap-1 xl:gap-2">
+              <div className="hidden lg:flex items-center gap-1 xl:gap-2 relative">
                 {navLinks.map((link) => {
-                  const isActive = activeHash === link.href;
+                  const isActive = activeSection === link.id;
 
                   return (
                     <a
                       key={link.name}
                       href={link.href}
-                      onClick={() => setActiveHash(link.href)}
-                      className={`text-[12px] uppercase font-bold tracking-widest px-3.5 py-1.5 rounded-full transition-all duration-300 relative group ${
+                      onClick={() => setActiveSection(link.id)}
+                      className={`text-[12px] uppercase font-bold tracking-widest px-3.5 py-1.5 rounded-full transition-colors relative ${
                         scrolled
                           ? isActive
-                            ? "text-[#F4E8C9] bg-white/10 border border-[#C9A84C]/40"
-                            : "text-white/80 hover:text-[#F4E8C9] hover:bg-white/5"
+                            ? "text-[#F4E8C9]"
+                            : "text-white/70 hover:text-[#F4E8C9]"
                           : isActive
-                          ? "text-[#182C1F] bg-[#F0F6F2] border border-[#C9A84C]/50 font-bold"
-                          : "text-[#283F30] hover:text-[#C9A84C] hover:bg-[#F4F8F5]"
+                          ? "text-[#182C1F]"
+                          : "text-[#283F30] hover:text-[#82631D]"
                       }`}
                     >
-                      <span>{link.name}</span>
-                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-[#C9A84C] rounded-full transition-all duration-300 group-hover:w-1/2" />
+                      <span className="relative z-10">{link.name}</span>
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeNavIndicator"
+                          className="absolute bottom-0 left-2 right-2 h-[2px] bg-[#C9A84C] rounded-full shadow-[0_0_8px_rgba(201,168,76,0.6)]"
+                          transition={{
+                            type: "spring",
+                            stiffness: 380,
+                            damping: 30
+                          }}
+                        />
+                      )}
                     </a>
                   );
                 })}
@@ -166,7 +201,7 @@ export default function Navbar({
               </div>
             </div>
 
-            {/* Mobile Menu Dropdown (Clean links only, no Book button inside) */}
+            {/* Mobile Menu Dropdown */}
             {mobileMenuOpen && (
               <div className="lg:hidden mt-3 pt-3 border-t border-[#C9A84C]/30 animate-in slide-in-from-top duration-300">
                 <div className="flex flex-col gap-1.5">
@@ -175,7 +210,7 @@ export default function Navbar({
                       key={link.name}
                       href={link.href}
                       onClick={() => {
-                        setActiveHash(link.href);
+                        setActiveSection(link.id);
                         setMobileMenuOpen(false);
                       }}
                       className={`text-sm font-semibold tracking-wide py-2.5 px-4 rounded-xl border transition-colors ${

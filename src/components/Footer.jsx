@@ -1,17 +1,40 @@
 import React from "react";
+import { motion } from "framer-motion";
 import Logo from "./Logo";
 import {
   MapPin,
   Phone,
   Clock,
+  Calendar,
+  ArrowRight,
   ShieldCheck
 } from "lucide-react";
+import MagneticButton from "./ui/MagneticButton";
+import {
+  WORD_REVEAL_CONTAINER,
+  WORD_REVEAL_CHILD,
+  TRANSITION_EASE
+} from "../constants/motion";
 
-export default function Footer({ clinicConfig = {} }) {
+export default function Footer({ clinicConfig = {}, onOpenBooking }) {
+  const ctaWords = [
+    { text: "Experience", gold: false },
+    { text: "Senior", gold: false },
+    { text: "Consultant-Led", gold: true },
+    { text: "Care", gold: true },
+    { text: "at", gold: false },
+    { text: "Excela.", gold: false }
+  ];
+
   return (
-    <footer className="bg-[#0E1A12] text-[#D0DFD4] pt-14 pb-10 border-t border-[#C9A84C]/30 relative">
+    <footer className="bg-[#0E1A12] text-[#D0DFD4] pt-20 pb-12 border-t border-[#C9A84C]/30 relative overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-[#C9A84C]/5 rounded-full blur-3xl pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-10 border-b border-white/10">
+
+        {/* Footer Navigation Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-white/10">
           {/* Brand Column */}
           <div className="lg:col-span-5 space-y-3">
             <Logo light size="md" layout="stacked" />

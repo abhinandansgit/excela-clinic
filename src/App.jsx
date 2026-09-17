@@ -12,6 +12,10 @@ import ManagePage from "./components/ManagePage";
 import Preloader from "./components/Preloader";
 import ScrollRevealWrapper from "./components/ScrollRevealWrapper";
 import FloatingMobileDock from "./components/FloatingMobileDock";
+import LenisProvider from "./components/ui/LenisProvider";
+import ScrollProgress from "./components/ui/ScrollProgress";
+import StatsSection from "./components/StatsSection";
+import TestimonialsSection from "./components/TestimonialsSection";
 import {
   INITIAL_CLINIC_CONFIG,
   INITIAL_DOCTORS,
@@ -164,85 +168,97 @@ export default function App() {
 
   // Public Clinic Website with Loading Screen & Smooth Scroll Reveal System
   return (
-    <div className="min-h-screen bg-[#F8FAF8] text-[#192A1F] flex flex-col font-sans selection:bg-[#C9A84C]/30 selection:text-[#132218] relative">
-      {/* Initial Page Loading Screen */}
-      {isLoading && (
-        <Preloader onComplete={() => setIsLoading(false)} />
-      )}
+    <LenisProvider>
+      <ScrollProgress />
+      <div className="min-h-screen bg-[#FAF9F6] text-[#192A1F] flex flex-col font-sans selection:bg-[#C9A84C]/30 selection:text-[#132218] relative">
+        {/* Initial Page Loading Screen */}
+        {isLoading && (
+          <Preloader onComplete={() => setIsLoading(false)} />
+        )}
 
-      {/* Navigation */}
-      <Navbar
-        onOpenBooking={() => handleOpenBooking("doctor")}
-        doctors={doctors}
-        clinicConfig={clinicConfig}
-      />
+        {/* Navigation */}
+        <Navbar
+          onOpenBooking={() => handleOpenBooking("doctor")}
+          doctors={doctors}
+          clinicConfig={clinicConfig}
+        />
 
-      {/* Main Public Content with Smooth Scroll Reveal */}
-      <main className="flex-1">
-        <ScrollRevealWrapper>
-          <Hero
-            onOpenBooking={handleOpenBooking}
-            doctors={doctors}
-            tests={tests}
-          />
-        </ScrollRevealWrapper>
+        {/* Main Public Content with Smooth Scroll Reveal */}
+        <main className="flex-1">
+          <ScrollRevealWrapper>
+            <Hero
+              onOpenBooking={handleOpenBooking}
+              doctors={doctors}
+              tests={tests}
+            />
+          </ScrollRevealWrapper>
 
-        <ScrollRevealWrapper delay={100}>
-          <DoctorsSection
-            doctors={doctors}
-            onBookDoctor={handleBookDoctor}
-          />
-        </ScrollRevealWrapper>
+          <ScrollRevealWrapper delay={100}>
+            <DoctorsSection
+              doctors={doctors}
+              onBookDoctor={handleBookDoctor}
+            />
+          </ScrollRevealWrapper>
 
-        <ScrollRevealWrapper delay={100}>
-          <TreatmentsSection
-            onBookDoctor={handleBookDoctor}
-            onBookTest={handleBookTest}
-          />
-        </ScrollRevealWrapper>
+          <ScrollRevealWrapper delay={100}>
+            <StatsSection />
+          </ScrollRevealWrapper>
 
-        <ScrollRevealWrapper delay={100}>
-          <DiagnosticsSection
-            tests={tests}
-            onBookTest={handleBookTest}
-          />
-        </ScrollRevealWrapper>
+          <ScrollRevealWrapper delay={100}>
+            <TreatmentsSection
+              onBookDoctor={handleBookDoctor}
+              onBookTest={handleBookTest}
+            />
+          </ScrollRevealWrapper>
 
-        <ScrollRevealWrapper delay={100}>
-          <ClinicAmbiance />
-        </ScrollRevealWrapper>
+          <ScrollRevealWrapper delay={100}>
+            <DiagnosticsSection
+              tests={tests}
+              onBookTest={handleBookTest}
+            />
+          </ScrollRevealWrapper>
 
-        <ScrollRevealWrapper delay={100}>
-          <LocationSection
-            clinicConfig={clinicConfig}
-          />
-        </ScrollRevealWrapper>
-      </main>
+          <ScrollRevealWrapper delay={100}>
+            <TestimonialsSection />
+          </ScrollRevealWrapper>
 
-      {/* Footer */}
-      <Footer
-        clinicConfig={clinicConfig}
-      />
+          <ScrollRevealWrapper delay={100}>
+            <ClinicAmbiance />
+          </ScrollRevealWrapper>
 
-      {/* Sticky Animated Mobile Quick-Action Dock */}
-      <FloatingMobileDock
-        onOpenBooking={handleOpenBooking}
-        clinicConfig={clinicConfig}
-      />
+          <ScrollRevealWrapper delay={100}>
+            <LocationSection
+              clinicConfig={clinicConfig}
+            />
+          </ScrollRevealWrapper>
+        </main>
 
-      {/* Patient Booking Modal */}
-      <BookingModal
-        isOpen={isBookingOpen}
-        onClose={() => setIsBookingOpen(false)}
-        doctors={doctors}
-        tests={tests}
-        bookings={bookings}
-        onAddBooking={handleAddBooking}
-        initialType={bookingType}
-        initialTargetId={bookingTargetId}
-        clinicConfig={clinicConfig}
-      />
-    </div>
+        {/* Footer */}
+        <Footer
+          clinicConfig={clinicConfig}
+          onOpenBooking={() => handleOpenBooking("doctor")}
+        />
+
+        {/* Sticky Animated Mobile Quick-Action Dock */}
+        <FloatingMobileDock
+          onOpenBooking={handleOpenBooking}
+          clinicConfig={clinicConfig}
+        />
+
+        {/* Patient Booking Modal */}
+        <BookingModal
+          isOpen={isBookingOpen}
+          onClose={() => setIsBookingOpen(false)}
+          doctors={doctors}
+          tests={tests}
+          bookings={bookings}
+          onAddBooking={handleAddBooking}
+          initialType={bookingType}
+          initialTargetId={bookingTargetId}
+          clinicConfig={clinicConfig}
+        />
+      </div>
+    </LenisProvider>
   );
 }
 

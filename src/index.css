@@ -5,16 +5,39 @@
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     --font-cinzel: 'Cinzel', serif;
+
+    /* Palette tokens */
+    --color-primary: #0E1A12;
+    --color-primary-dark: #09130D;
+    --color-primary-light: #182C1E;
+    
+    --color-bg: #FAF9F6;
+    --color-bg-alt: #F3F1EC;
+    --color-card: #FFFFFF;
+
+    /* Accent tokens */
+    --color-accent: #C9A84C;
+    --color-accent-light: #E7CF86;
+    --color-accent-dark: #A48431;
+    /* WCAG AA compliant gold for small text on light backgrounds */
+    --color-accent-text: #82631D;
+
+    --color-text-main: #192A1F;
+    --color-text-muted: #4A6352;
+
+    /* Signature motion curve */
+    --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   html {
-    scroll-behavior: smooth;
+    /* Disable native scroll-behavior so Lenis smooth scroll executes without jitter */
+    scroll-behavior: auto !important;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #F8FAF8;
-    color: #17271D;
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
@@ -28,7 +51,7 @@
   }
 
   section[id] {
-    scroll-margin-top: 85px;
+    scroll-margin-top: 95px;
   }
 }
 
